@@ -1,0 +1,51 @@
+<html>
+
+    <body>
+        <h1>Data Pemesanan</h1>
+        <div id="list"></div>
+        <script>
+            const electron = require("electron");
+            const {ipcRenderer} = electron;
+            ipcRenderer.send("appointment:request:list");
+
+            ipcRenderer.on("appointment:response:list", (event, appointment) => {
+            const listDiv = document.getElementById("list");
+            appointment.forEach(appointment => {
+                const appointmentDiv =document.createElement("div");
+
+                const nameParagraph = document.createElement("p");
+                nameParagraph.innerHTML = `Name: ${appointment.name}`;
+
+                const numberParagraph = document.createElement("p")
+                numberParagraph.innerHTML = `Phone Number: ${appointment.number}`;
+
+                const pemesananParagraph = document.createElement("p")
+                pemesananParagraph.innerHTML = `Tanggal Pemesanan: ${appointment.pemesanan}`;
+
+                const pengembalianParagraph = document.createElement("p")
+                pengembalianParagraph.innerHTML = `Tanggal Pengembalian: ${appointment.pengembalian}`;
+
+
+                const JenismobilParagraph = document.createElement("p")
+                JenismobilParagraph.innerHTML = `Jenis mobil: ${appointment.Jenismobil}`;
+
+                const doneParagraph = document.createElement("p")
+                doneParagraph.innerHTML = `Done: ${appointment.done ? "Yes" : "No"}`;
+
+                const hr = document.createElement("hr");
+
+                appointmentDiv.appendChild(nameParagraph);
+                appointmentDiv.appendChild(numberParagraph);
+                appointmentDiv.appendChild(pemesananParagraph);
+                appointmentDiv.appendChild(pengembalianParagraph);
+                appointmentDiv.appendChild(JenismobilParagraph);
+                appointmentDiv.appendChild(doneParagraph);
+                appointmentDiv.appendChild(hr);
+
+                 listDiv.append(appointmentDiv);
+            });
+        });
+    </script>
+</body>
+
+</html>

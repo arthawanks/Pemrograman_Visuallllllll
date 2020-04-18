@@ -1,0 +1,151 @@
+<html>
+    <head>
+    </head>
+
+    <body>
+        <center>
+        <h1>  Jenis Kendaraan  </h1>
+        </center>
+        
+
+    <table width="130%">
+        <tbody>
+            <tr>
+                <td width="50%"><b> TOYOTA INOVA </b></td> 
+                <td width="50%"><b> TOYOTA AVANZA</b></td>
+            </tr>
+            <tr>
+                <td> 
+                    <img class="wp-image-70 aligncenter" src="http://sriratubali.com/wp-content/uploads/2017/11/innova-300x178.png"  width="50%"> 
+                    <br>
+                    <strong>Manual/Matic</strong>
+                    <br>
+                    "Mobil + BBM + Sopir"
+                    <br>
+                    "Mobil Lepas Kunci"
+                    <br>
+                </td>
+                <td>
+                    <img class="wp-image-71 aligncenter" src="http://sriratubali.com/wp-content/uploads/2017/11/toyota-avanza-white-300x189.png"  width="50%" >
+                    <br>
+                    <strong>Manual/Matic</strong>
+                    <br>
+                    "Mobil + BBM + Sopir"
+                    <br>
+                    "Mobil Lepas Kunci"
+                    <br>
+                </td>
+            </tr>
+        
+            <tr>
+                <td width="50%"><b> DAIHATSU XENIA</b> </td> 
+                <td width="50%"><b>TOYOTA CALYA</b> </td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="wp-image-86 aligncenter" src="http://sriratubali.com/wp-content/uploads/2017/11/xenia-300x188.png" width="50%" >
+                    <br>
+                    <strong>Manual/Matic</strong>
+                    <br>
+                    "Mobil + BBM + Sopir"
+                    <br>
+                    "Mobil Lepas Kunci"
+                </td>
+                <td>
+                    <img class="wp-image-83 aligncenter" src="http://sriratubali.com/wp-content/uploads/2017/11/cayla-300x189.png" width="48%">
+                    <br>
+                    <strong>Manual/Matic</strong>
+                    <br>
+                    "Mobil + BBM + Sopir"
+                    <br>
+                    "Mobil Lepas Kunci"
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="wp-image-85 aligncenter" src="http://sriratubali.com/wp-content/uploads/2017/11/sigra-300x189.png" width="50%">
+                    <br>
+                    <strong>Manual/Matic</strong>
+                    <br>
+                    "Mobil + BBM + Sopir"
+                    <br>
+                    "Mobil Lepas Kunci"
+                </td>
+                <td>
+                    <img class="wp-image-80 aligncenter" src="http://sriratubali.com/wp-content/uploads/2017/11/agya-300x188.png" width="50%">
+                    <br>
+                    <strong>Manual/Matic</strong>
+                    <br>
+                    "Mobil + BBM + Sopir"
+                    <br>
+                    "Mobil Lepas Kunci"
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="background-color: #fbfbfb; color: rgba(0, 0, 0, 0.6)">
+        <img src="https://3.bp.blogspot.com/-ZcONDOvQR70/Ujk_fDNAwCI/AAAAAAAAAjE/gpxKVHHFjXc/s1600/Pemesanan.png"   width="5%">
+        Order Di Atas  </div>
+    
+    
+        
+        <div id="list"></div>
+    </body>
+
+    <script>
+    const electron = require("electron");
+    const {ipcRenderer} = electron;
+    ipcRenderer.send("appoinment:request:today");
+
+    ipcRenderer.on("appoinment:request:today", (event,appointment) => {
+        const listDiv = document.getElementById("List");
+        appointment.forEach(appointment => {
+            const appoinmentDiv = document.createElement("div");
+            const nameParagraph = document.createElement("p");
+            nameParagraph.innerHTML = `Name: ${appointment.name}`;
+
+            const numberParagraph = document.createElement("p");
+            numberParagraph.innerHTML = `Phone number: ${appointment.number}`;
+
+            const dateParagraph = document.createElement("p");
+            dateParagraph.innerHTML = `Date: ${appointment.date}`;
+
+            const hourParagraph = document.createElement("p");
+            hourParagraph.innerHTML = `Hour: ${appointment.hour}`;
+
+            const symptomsParagraph = document.createElement("p");
+            symptomsParagraph.innerHTML = `Symptoms: ${appointment.symptoms}`;
+
+            const doneParagraph = document.createElement("p");
+            doneParagraph.innerHTML = `Done: ${appointment.done ? "Yes" : "No"}`;
+
+            const doneButton = document.createElement("hr");
+            doneButton.innerHTML = "Done";
+            doneButton.disable = appointment.done ? true : false;
+            doneButton.onclick = () => done(appointment.id);
+
+            const hr = document.createElement("hr");
+
+            appoinmentDiv.appendChild(nameParagraph);
+            appoinmentDiv.appendChild(numberParagraph);
+            appoinmentDiv.appendChild(dateParagraph);
+            appoinmentDiv.appendChild(hourParagraph);
+            appoinmentDiv.appendChild(symptomsParagraph);
+            appoinmentDiv.appendChild(doneParagraph);
+            appoinmentDiv.appendChild(doneButton);
+            appoinmentDiv.appendChild(hrParagraph);
+
+            listDiv.append(appoinmentDiv);
+
+
+        });
+
+    });
+
+    const done = id =>
+    {
+        ipcRenderer.send("appoinment:done", id);
+    };
+    </script>
+</html>
