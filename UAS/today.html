@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    
+</head>
+
+<body>
+    <table border="2" style="background-color:rgb(8, 255, 107)">
+        <tr>
+    <td style="background-color: rgba(16, 155, 48, 0.857)" colspan="3">
+    <h1><img src="https://library.kissclipart.com/20180904/xke/kissclipart-shopping-cart-icon-clipart-shopping-cart-clip-art-a36ecd2b4b84b30f.png"   width="5%"></h1>
+    <div id="list"></div>
+    </td>
+</td>
+</tr>
+</body>
+<script>
+    const electron = require("electron");
+    const {
+        ipcRenderer
+    } = electron;
+    ipcRenderer.send("appointment:request:today");
+
+ipcRenderer.on("appointment:response:today", (event, appointments) => {
+    const listDiv = document.getElementById("list");
+    listDiv.innerHTML ="";
+
+    appointments.forEach(appointment => {
+        const appointmentDiv = document.createElement("div");
+
+        const nameParagraph = document.createElement("p");
+        nameParagraph.innerHTML = `Kode Barang: ${appointment.name}`;
+
+        const numberParagraph = document.createElement("p");
+        numberParagraph.innerHTML = `Phone Number: ${appointment.number}`;
+
+        const dateParagraph = document.createElement("p");
+        dateParagraph.innerHTML = `Tanggal Pembelian: ${appointment.date}`;
+
+
+        const jenisParagraph = document.createElement("p");
+        jenisParagraph.innerHTML = `jenis Barang: ${appointment.jenis}`;
+
+        const jumlahParagraph = document.createElement("p");
+        jumlahParagraph.innerHTML = `Jumlah Barang: ${appointment.jumlah}`;
+        
+        const hargaParagraph = document.createElement("p");
+        hargaParagraph.innerHTML = `harga Barang: ${appointment.harga}`;
+
+        const doneParagraph = document.createElement("p");
+        doneParagraph.innerHTML = `Sudah Bayar?: ${appointment.done ? "Yes" : "No"}`;
+
+        const doneButton = document.createElement("button");
+        doneButton.innerHTML = "Done";
+        doneButton.disabled = appointment.done ? true : false;
+        doneButton.onclick = () => done(appointment.id);
+
+        const hr = document.createElement("hr");
+
+        appointmentDiv.appendChild(nameParagraph);
+        appointmentDiv.appendChild(numberParagraph);
+        appointmentDiv.appendChild(dateParagraph);
+        appointmentDiv.appendChild(jenisParagraph);
+        appointmentDiv.appendChild(jumlahParagraph);
+        appointmentDiv.appendChild(hargaParagraph);
+        appointmentDiv.appendChild(doneParagraph);
+        appointmentDiv.appendChild(doneButton);
+        appointmentDiv.appendChild(hr);
+
+        listDiv.append(appointmentDiv);
+        });
+    });
+    const done = id => {
+        ipcRenderer.send("appointment:done", id);
+    };
+</script>
+
+
+</html>

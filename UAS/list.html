@@ -1,0 +1,63 @@
+<html>
+    
+<body>
+    <h1>HISTORY</h1>
+    <table border="1" style="background-color:rgb(8, 201, 85)">
+            <tr>
+                 <td style="background-color: rgba(221, 255, 4, 0.857)" colspan="3">
+    <div id="list"></div>
+    <script>
+    const electron = require("electron");
+    const {
+        ipcRenderer
+    } = electron;
+
+    ipcRenderer.send("appointment:request:list");
+
+    ipcRenderer.on("appointment:response:list", (event, appointments) => {
+        const listDiv = document.getElementById("list");
+        appointments.forEach(appointment => {
+            const appointmentDiv = document.createElement("div");
+
+            const nameParagraph = document.createElement("p");
+            nameParagraph.innerHTML = `Kode Barang: ${appointment.name}`;
+
+            const numberParagraph = document.createElement("p");
+            numberParagraph.innerHTML = `Phone Number: ${appointment.number}`;
+
+            const dateParagraph = document.createElement("p");
+            dateParagraph.innerHTML = `Date: ${appointment.date}`;
+
+            const jenisParagraph = document.createElement("p");
+            jenisParagraph.innerHTML = `Jenis Barang: ${appointment.jenis}`;
+
+            const jumlahParagraph = document.createElement("p");
+            jumlahParagraph.innerHTML = `Jumlah Barang: ${appointment.jumlah}`;
+
+            const hargaParagraph = document.createElement("p");
+            hargaParagraph.innerHTML = `Harga Barang: ${appointment.harga}`;
+
+            const doneParagraph = document.createElement("p");
+            doneParagraph.innerHTML = `Sudah Bayar?: ${appointment.done ? "Yes" : "No"}`;
+
+           
+
+            const hr = document.createElement("hr");
+
+            appointmentDiv.appendChild(nameParagraph);
+            appointmentDiv.appendChild(numberParagraph);
+            appointmentDiv.appendChild(dateParagraph);
+            appointmentDiv.appendChild(jenisParagraph);
+            appointmentDiv.appendChild(jumlahParagraph);
+            appointmentDiv.appendChild(hargaParagraph);
+            appointmentDiv.appendChild(doneParagraph);
+            appointmentDiv.appendChild(hr);
+
+            listDiv.append(appointmentDiv);
+        });
+    });
+
+ </script>
+</body>
+
+</html>

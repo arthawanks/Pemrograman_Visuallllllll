@@ -1,0 +1,76 @@
+<html>
+    <head>
+        </head>
+    
+
+    <body>
+        <table border="2" style="background-color:rgb(8, 201, 85)">
+            <tr>
+                 <td style="background-color: rgba(16, 155, 48, 0.857)" colspan="3">
+                    <img src="https://www.pngkit.com/png/full/49-495416_freeuse-stock-collection-of-free-contents-order-form.png"   width="5%">
+        <h3>Input Belanjaan</h3>
+        <form id="form">
+            <label for="name"> Kode Barang:</label><br />
+            <input type="text" name="name" required />
+            <br /><br />
+            <label for="number">Phone Number:</label><br />
+            <input type="number" name="number" required />
+            <br /><br />
+            <label for="date"> Date :</label><br />
+            <input type="date" name="date" placeholder="YYYY-MM-DD" required />
+            <br /><br />
+            <label for="jenis"> Jenis Barang:</label><br />
+            <input type="text" name="jenis" required />
+            <br /><br />
+            <label for="jumlah"> Jumlah Barang:</label><br />
+            <input type="number" name="jumlah" required />
+            <br></br>
+            <label for="harga"> Harga Barang:</label><br />
+            <input type="number" name="harga" required />
+            <br /><br />
+            
+            <select id="barang" onchange="price()">
+                <option value="0">Jenis Pembayaran</option>
+                <option value="1791284532">BCA</option>
+                <option value="1928346272">BRI</option>
+                <option value="1827264366">BNI</option>
+                <option value="-">TUNAI</option>
+            </select>
+            
+        
+            <input type="text" id="harga">
+           <br></br>
+              <input type="submit"/>
+        </form>
+    </td>
+</tr>
+       
+        
+
+        <script type="text/javascript">
+            function price() {
+             var tes = document.getElementById("barang").value;
+                 document.getElementById("harga").value=tes;
+         }
+            const electron = require("electron");
+            const {
+                ipcRenderer
+            } = electron;
+            
+            const form = document.getElementById("form");
+            const elements = {};
+
+            form.addEventListener("submit", event =>{
+                event.preventDefault();
+
+                for (let i = 0; i < form.elements.length; i++) {
+                    if (form.elements[i].type !== "submit")
+                    elements[form.elements[i].name] = form.elements[i].value;
+                }
+
+                ipcRenderer.send("appointment:create", elements);
+            });
+        </script>
+
+    </body>
+</html>
